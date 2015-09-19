@@ -1,0 +1,127 @@
+@font-face{ 
+	font-family: 'Exo';
+	src: url('../fonts/exo/Exo-Regular.eot');
+	src: url('../fonts/exo/Exo-Regular.eot?#iefix') format('embedded-opentype'),
+	     url('../fonts/exo/Exo-Regular.woff') format('woff'),
+	     url('../fonts/exo/Exo-Regular.ttf') format('truetype'),
+	     url('../fonts/exo/Exo-Regular.svg#webfont') format('svg');
+}
+
+@font-face{ 
+	font-family: 'Exo';
+        font-style: italic;
+	src: url('../fonts/exo/Exo-Italic.eot');
+	src: url('../fonts/exo/Exo-Italic.eot?#iefix') format('embedded-opentype'),
+	     url('../fonts/exo/Exo-Italic.woff') format('woff'),
+	     url('../fonts/exo/Exo-Italic.ttf') format('truetype'),
+	     url('../fonts/exo/Exo-Italic.svg#webfont') format('svg');
+}
+
+@font-face{ 
+	font-family: 'Exo';
+        font-weight: bold;
+	src: url('../fonts/exo/Exo-Bold.eot');
+	src: url('../fonts/exo/Exo-Bold.eot?#iefix') format('embedded-opentype'),
+	     url('../fonts/exo/Exo-Bold.woff') format('woff'),
+	     url('../fonts/exo/Exo-Bold.ttf') format('truetype'),
+	     url('../fonts/exo/Exo-Bold.svg#webfont') format('svg');
+}
+
+body {
+    /*font: normal 1.00em 'trebuchet ms', arial, sans-serif;*/
+    font-family: "Exo", Helvetica, Arial, sans-serif;
+    background: #F7F7F7 url(../img/bg.png);
+    color: #555;
+    margin:0;
+    padding:0;
+}
+
+h1 {
+    text-align: center;
+    margin: 30px;
+    font-weight:700;
+    font-size: 3.5em;
+}
+
+h1 span {
+    color:#428bca;
+}
+
+#myCanvas {
+    min-width: 100%;
+    width:100%;
+}
+#LesOnglets{
+    background:#EEEEEE;
+}
+
+
+/*
+ Drag an drop File
+*/
+
+/* layout.css Style */
+.upload-drop-zone {
+  border-width: 4px;
+  margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+  color: #8C8C8C;
+  border-style: dashed;
+  border-color: #ccc;
+  text-align: center
+}
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.alertEquation{
+    color:red;
+}
+
+
+/* Onglet Equation */
+
+.mrgn-bttm-md {
+    margin-bottom: 0px;
+}
+
+#EG_equations_container.form-horizontal .has-feedback .form-control-feedback{
+        right: 0;
+}
+#EG_equations_container.form-horizontal .form-group {
+    margin-right: 0;
+    margin-left: 0;
+}
+@media (min-width: 1400px) {
+    .container {
+        width: 1370px;
+    }
+}
+
+@media (max-width: 400px) {
+    h1 {
+    font-size: 3em;
+    }
+}

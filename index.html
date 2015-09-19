@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Oscilloscope</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <!--<link href="//fonts.googleapis.com/css?family=Exo:100italic,100,200italic,200,300italic,300,400italic,400,500italic,500,600italic,600,700italic,700,800italic,800,900italic,900" rel="stylesheet" type="text/css">-->
+        <!--<link rel="icon" type="image/png" href="/images/favicon.png">-->
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <h1>Oscillo<span>Scope</span></h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row clearfix">
+                <!--Graphe-->
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="content">
+                                <canvas id="myCanvas">
+                                    <p>Votre navigateur ne prend pas en charge le HTML5, merci de le mettre à jour</p>
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Onglets-->
+                <div id="control" class="col-md-6 ">
+                    <div class="panel panel-default">
+                        <ul class="nav nav-tabs nav-justified" id="LesOnglets">
+                            <li id="onglet_equation"><a onclick="OS.changeOnglet('equation')" href="#Equation">Equation</a></li>
+                            <li id="onglet_fichier"><a onclick="OS.changeOnglet('fichier')" href="#Fichier">Fichier</a></li>
+                            <li id="onglet_aide"><a onclick="OS.changeOnglet('aide')" href="#Aide">FAQ</a></li>
+                        </ul>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <!--Onglet Equation-->
+                                <div id="contenu_onglet_equation" class="tab-pane">
+                                    <h3>Paramétres</h3>
+                                    <div id="EG_erreurParam" class="hidden">
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <span class="sr-only">Error:</span>
+                                            <span id="EG_loc_erreur"></span>
+                                        </div>
+                                    </div>
+                                    <form class="form-horizontal" role="form">
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <div class="row">
+                                                    <label for="EG_freqEch" class="col-md-6 control-label">Fréquence d'échantillonnage</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_freqEch" value="20" min="0.1" max="10000"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label for="EG_dephasage" class="col-md-6 control-label">Déphasage</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_dephasage" value="0" min="-100" max="100">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <div class="row">
+                                                    <label for="EG_ymax" class="col-md-6 control-label">Y max :</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_ymax" value="5">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label for="EG_ymin" class="col-md-6 control-label">Y min :</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_ymin" value="-5">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-sm-6 ">
+                                                <div class="row">
+                                                    <label for="EG_xmin" class="col-md-6 control-label">Commencer à :</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_xmin" value="0" min="-1000" max="1000">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label for="EG_vitesse" class="col-md-6 control-label">Vitesse de lecture :</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_vitesse" value="1" min="0.1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <div class="row">
+                                                    <label for="EG_xmax" class="col-md-6 control-label">Durée affichée :</label>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="EG_xmax" value="2" min="1" max="100">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <div class="checkbox">
+                                                            <label for="EG_fp" class="">
+                                                                <input type="checkbox" id="EG_fp" name="perdi" value="perdiodique" checked="">Répéter sur une période de 2 π
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <h3>Fonctions</h3>
+                                    <div id="EG_equations_container" class="form-horizontal">
+
+                                    </div>
+                                    <br>
+
+                                    <div class="btn-group visible-xs" role="group">
+                                        <button type="button" class="btn btn-success" id="EG_ajouter_equation-xs">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter une fonction 
+                                        </button>
+                                    </div>
+
+                                    <div class="btn-group btn-group-justified" role="group" >
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-primary " id="EG_PlayStop">
+                                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Lecture
+                                            </button>
+                                        </div>
+                                        <div class="btn-group hidden-xs" role="group">
+                                            <button type="button" class="btn btn-success" id="EG_ajouter_equation">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter <span class="hidden-md">une</span> fonction 
+                                            </button>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-default" id="EG_reset">
+                                                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Redémarrer
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                   <!--<div>
+                                        <h2>Encore à faire : </h2>
+                                        <ul>
+                                            <li>corriger bug répétition sin(t*pi)-> mauvaise période</li>
+                                            <li>J'ai laissé le code de la prof au milieu, mais il sert à rien</li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                                <!--Onglet Fichier-->
+                                <div id="contenu_onglet_fichier" class="tab-pane">
+                                    <h3>Visualisez votre fichier</h3>
+                                    <div id="js-upload-file-preview"></div>
+                                    <form action="#" method="post" id="js-upload-form">
+                                        <!-- Drop Zone -->
+                                        <div class="upload-drop-zone" id="drop-zone">
+                                            <h4>Choisissez votre fichier sur votre ordinateur</h4>
+                                            <div class="fileUpload btn btn-success">
+                                                <span>Sélectionner</span>
+                                                <input id="js-upload-file" type="file" class="upload" />
+                                            </div>
+                                            <h4>Ou glissez et déposez votre fichier ici.</h4>
+                                        </div>
+                                        <button id="js-upload-submit" type="submit" class="btn btn-primary btn-block" disabled>Exécuter le fichier</button>
+                                    </form>
+                                    <p class="text-center" id="loading"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Chargement</p>
+
+                                    <div id="commande-zone">
+                                        <h3>Commande</h3>
+                                        <div id="errorZone"></div>
+                                        <form class="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <label for="FG_demarage" class="col-sm-6 control-label">Démarrage (seconde)</label>
+                                                <div class="col-sm-6">
+                                                    <input type="number" step="0.001" class="form-control" id="FG_demarage" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="FG_periodeVisible" class="col-sm-6 control-label">Temps à afficher (seconde)</label>
+                                                <div class="col-sm-6">
+                                                    <input type="number" step="0.001" class="form-control" id="FG_periodeVisible" value="1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="FG_vitesseLecture" class="col-sm-6 control-label">Vitesse de lecture</label>
+                                                <div class="col-sm-6">
+                                                    <input type="number" step="0.001" class="form-control" id="FG_vitesseLecture" value="0.1">
+                                                </div>
+                                            </div>
+                                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                                <div class="btn-group" role="group">
+                                                    <button id="FG_PlayStop" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Lecture</button>
+                                                </div>
+                                                <div class="btn-group" role="group">
+                                                    <button id="FG_RedemaLecture" type="button" class="btn btn-default"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Redémarrer la lecture</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!--Onglet Aide-->
+                                <div id="contenu_onglet_aide" class="tab-pane">
+
+                                    <div class="btn-group btn-group-justified" role="group" >
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-primary " id="A_afficheAideFonction">
+                                                Aide Equation
+                                            </button>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-default" id="A_afficheAideFichier">
+                                                Aide Fichier
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="aideEquation">
+                                        <h2>Aide Equation</h2> 
+                                        <h3>Comment afficher la courbe d'une fonction ?</h3>
+                                        <div>A partir de l'onglet <strong>Equation</strong>, pour afficher le signal d'une fonction il suffit de taper l'équation dans le champ prévu à cet effet. <br>
+                                            Vous pouvez ensuite modifier les paramètres d'affichage et animer la courbe en cliquant sur <strong>Lecture</strong>.</div>
+                                        <h3>Pourquoi ma fonction n'est-elle pas valide ?</h3>
+                                        <div> Dans un premier temps, commencez par vérifier que les variables que vous utilisez sont bien des <strong>"t"</strong> et non des "x" ou "y". <br>
+                                            Les fonctions telles que sin(t), cos(t), etc. doivent être écrite <strong>sans majuscule</strong>. <br>
+                                            Pensez également à vérifier le nombre de parenthèse et leur imbrication. 
+                                        </div>
+                                        <h3>Quelles fonctions est-il possible d'utiliser ?</h3>
+                                        <div>Il est possible d'utiliser les fonctions sin(t), cos(t), tan(t), asin(t), acos(t), atan(t), exp(t), abs(t), round(t), ceil(t), floor(t), sqrt(t), log(t), ln(t), pow(t), min(t), max(t) et t².<br>
+                                            L'utilisation des variations de PI, pi, π, et Pi sont également prises en compte. <br>
+                                            </div>
+                                        <h3>Comment puis-je ajouter plusieurs fonctions ?</h3>
+                                        <div>Vous pouvez visualiser plusieurs signaux en même temps. Pour cela, cliquez sur <strong>Ajouter une fonction</strong>. <br>
+                                            Un nouveau champ apparaîtra pour vous permettre d'ajouter une nouvelle équation et choisir sa couleur.    
+                                        </div>
+                                    </div>
+                                    <div id="aideFichier">
+                                        <h2>Aide Fichier</h2> 
+                                        <h3>Comment importer un fichier ? </h3>   
+                                        <div>
+                                            A partir de l’onglet <strong>Fichier</strong>, un fichier peut être ajouté par <em>sélection</em> ou par <em>glisser-déposer</em>. <br>
+                                            Quand le message "Vous avez choisi le fichier : <em>nomfichier.txt</em>" apparaît il est possible d'<strong>Exécuter le fichier</strong>. 
+                                            Si les données sont valides le signal s'affiche. Les paramètres suivants sont modifiables :
+                                            <ul>
+                                                <li>Démarrage (seconde) : démarrer la lecture du fichier à partir de X secondes.</li>
+                                                <li>Temps à afficher (seconde) : zoomer sur le signal, affiche dans la fenêtre la durée choisie.</li>
+                                                <li>Vitesse de lecture : vitesse de l’animation du signal.</li>
+                                            </ul>
+                                            <strong>Lecture</strong> : lire le fichier et animer le signal. <br>
+                                            <strong>Stop</strong> : faire une pause lors de la lecture. <br>
+                                            <strong>Redémarrer la lecture</strong> : relire le fichier depuis le début. <br>
+                                        </div>
+                                        <h3>Pourquoi mon fichier ne peut pas être lu ?</h3>  
+                                        <div>
+                                            Vérifiez que que votre fichier est bien au format <strong>.txt</strong> et qu'il contient des données correspondantes à un signal, soit la <strong>fréquence puis des coordonnées de points</strong> (première colone le temps et deuxième la postition en y). 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/lib/FileGraph.js" ></script>
+        <script src="js/lib/EquationGraph.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/site.js" ></script>
+    </body>
+</html>
